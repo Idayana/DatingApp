@@ -1,0 +1,9 @@
+<div class="container mt-5">
+  <div class="row">
+    <ng-container *ngFor="let user of users" >
+      <div *ngIf="user.id != authService.decodedToken.nameid" class="col-lg-2 col-md-3 col-sm-6">
+          <app-member-card [user]="user"></app-member-card>
+      </div>
+    </ng-container>
+  </div>
+</div>
