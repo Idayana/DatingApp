@@ -103,5 +103,27 @@ namespace DatingApp.API.Controllers
 
             return BadRequest("Failed to like user");
         }
+
+        [HttpDelete("{userid}/like/{recipientId}")]
+        public async Task<IActionResult> DeleteLike(int userId, int recipientId)
+        {
+            if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var like = await _repo.GetLike(userId, recipientId);
+
+            if(like == null)
+                return BadRequest("You dont have like with this user");
+
+            if(userId == like.LikeeId)
+                return BadRequest("You dont have permission to delete this like");
+
+            _repo.Delete<Like>(like);
+
+            if(await _repo.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to delete the like");
+        }
     }
 }

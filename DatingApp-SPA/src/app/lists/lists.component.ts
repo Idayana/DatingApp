@@ -28,7 +28,7 @@ export class ListsComponent implements OnInit {
   }
 
   loadUsers() {
-    this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage,null, this.likesParam)
+    this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, null, this.likesParam)
     .subscribe((res: PaginatedResult<User[]>) => {
       this.users = res.result;
       this.pagination = res.pagination;
@@ -40,6 +40,10 @@ export class ListsComponent implements OnInit {
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
     this.loadUsers();
+  }
+
+  updateUserLikees(val: any) {
+    this.users = this.users.filter((user: User) => user.id !== val.userId);
   }
 
 }
